@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qaton Qaragai Resort & SPA</title>
+    <link rel="icon" href="images/hero/Logo.png" type="image/png">
+    <link rel="shortcut icon" href="images/hero/Logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: '#7c9a8c',
+                        'sage-light': '#a8c4b8',
+                        'sage-dark': '#5c7a6c',
+                        'sage-pale': '#f0f5f2',
+                        'stone': '#f5f3ef',
+                        'warm': '#c9b896',
+                        cream: '#f5f0e6',
+                        'cream-dark': '#e8e0d0',
+                        sand: '#d4c9b5',
+                        gold: '#c9a86c',
+                        yellow: { 500: '#d4a84c', 600: '#b8953c' },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        nav a {
+            position: relative;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #4a7c59;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            #home h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Language dropdown styles */
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .lang-btn-main {
+            background: none;
+            border: 1px solid #5c7a6c;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: #5c7a6c;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .lang-btn-main:hover {
+            background: rgba(92, 122, 108, 0.1);
+        }
+        
+        .lang-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 5px;
+            background: white;
+            min-width: 120px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        .lang-dropdown-content.show {
+            display: block;
+        }
+        
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            text-align: left;
+        }
+        
+        .lang-option:hover {
+            background: #f0f5f2;
+        }
+        
+        .lang-option.active {
+            background: #7c9a8c;
+            color: white;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .modal-content {
+            background: rgba(30, 50, 40, 0.98);
+            border-radius: 1.5rem;
+            max-width: 600px;
+            width: 100%;
+            margin: 2rem auto;
+            position: relative;
+            animation: modalOpen 0.3s ease;
+        }
+        
+        @keyframes modalOpen {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .modal-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 1.5rem 1.5rem 0 0;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-body h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-body p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+        
+        .modal-body .label {
+            color: #c9a86c;
+            font-weight: 600;
+        }
+        
+        .modal-body .info-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content { margin: 1rem auto; }
+            .modal-img { height: 180px; }
+            .modal-body { padding: 1rem; }
+            .modal-body h3 { font-size: 1.25rem; }
+            .modal-body p { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body class="bg-cream font-sans text-gray-700">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-cream/95 backdrop-blur shadow-lg z-50" style="border-bottom: 1px solid #e8e0d0;">
+        <div class="max-w-6xl mx-auto px-2 py-2 md:py-3 flex justify-between items-center">
+            <a href="#home" class="flex items-center gap-2">
+                <img src="images/hero/Logo.png" alt="Qaton Qaragai" class="h-10 md:h-12">
+                <span class="text-xl md:text-2xl font-bold text-sage-dark hidden sm:block">Qaton Qaragai</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-6 text-base">
+                <a href="#about" class="hover:text-sage-dark transition" data-i18n="nav_about">О базе</a>
+                <a href="#spa" class="hover:text-sage-dark transition" data-i18n="nav_spa">SPA & Wellness</a>
+                <a href="#rooms" class="hover:text-sage-dark transition" data-i18n="nav_rooms">Номера</a>
+                <a href="#prices" class="hover:text-sage-dark transition" data-i18n="nav_prices">Цены</a>
+                <a href="#gallery" class="hover:text-sage-dark transition" data-i18n="nav_gallery">Галерея</a>
+                <a href="#contact" class="hover:text-sage-dark transition" data-i18n="nav_contact">Контакты</a>
+                
+                <!-- Language dropdown -->
+                <div class="lang-dropdown">
+                    <button class="lang-btn-main" onclick="toggleLanguageDropdown(event)">
+
+                        <span id="current-lang-code">RU</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="lang-dropdown-content" id="lang-dropdown">
+                        <button class="lang-option" data-lang="ru" onclick="switchLanguage('ru')">
+                            <span>🇷u</span> Русский
+                        </button>
+                        <button class="lang-option" data-lang="en" onclick="switchLanguage('en')">
+                            <span>en</span> English
+                        </button>
+                        <button class="lang-option" data-lang="kk" onclick="switchLanguage('kk')">
+                            <span>🇰🇿</span> Қазақша
+                        </button>
+                    </div>
+                </div>
+                
+                <a href="#contact" class="bg-sage text-white px-5 py-2.5 rounded-lg hover:bg-gold transition text-base" data-i18n="nav_book">Забронировать</a>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <a href="https://www.instagram.com/qaton_qaragai_resort" target="_blank" class="hidden sm:block p-2 hover:text-sage-dark transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                
+                <button id="mobile-menu-btn" class="md:hidden p-2" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6 text-sage-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-cream border-t border-gray-200">
+            <div class="px-4 py-3 space-y-2">
+                <a href="#about" class="block py-2 hover:text-sage-dark" onclick="closeMobileMenu()" data-i18n="nav_about">О базе</a>
+                <a href="#spa" class="block py-2 hover:text-sage-dark" onclick="closeMobileMenu()" data-i18n="nav_spa">SPA & Wellness</a>
+                <a href="#rooms" class="block py-2 hover:text-sage-dark" onclick="closeMobileMenu()" data-i18n="nav_rooms">Номера</a>
+                <a href="#prices" class="block py-2 hover:text-sage-dark" onclick="closeMobileMenu()" data-i18n="nav_prices">Цены</a>
+                <a href="#gallery" class="block py-2 hover:text-sage-dark" onclick="closeMobileMenu()" data-i18n="nav_gallery">Галерея</a>
+                <a href="#contact" class="block py-2 hover:text-sage-dark" onclick="closeMobileMenu()" data-i18n="nav_contact">Контакты</a>
+                <a href="https://www.instagram.com/qaton_qaragai_resort" target="_blank" class="block py-2 hover:text-sage-dark">Instagram</a>
+                
+                <div class="border-t border-gray-200 pt-3 mt-2">
+                    <p class="text-sm text-gray-500 mb-2">Язык / Language / Тіл:</p>
+                    <div class="flex gap-2">
+                        <button class="lang-option-mobile px-3 py-1 text-sm rounded" data-lang="ru" onclick="switchLanguage('ru'); closeMobileMenu();">🇷🇺 Русский</button>
+                        <button class="lang-option-mobile px-3 py-1 text-sm rounded" data-lang="en" onclick="switchLanguage('en'); closeMobileMenu();">en English</button>
+                        <button class="lang-option-mobile px-3 py-1 text-sm rounded" data-lang="kk" onclick="switchLanguage('kk'); closeMobileMenu();">🇰🇿 Қазақша</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-start pt-16 overflow-hidden">
+        <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
+            <source src="video/Cotton_Video_top.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="relative z-10 max-w-4xl mx-auto px-4 text-left pt-20">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4" data-i18n="hero_title">Qaton Qaragai Resort & SPA</h1>
+            <p class="text-xl md:text-2xl text-white/90 mb-8" data-i18n="hero_subtitle">Пантовые ванны и оздоровление в Алтайских горах</p>
+            <a href="#contact" class="inline-block bg-sage text-white px-8 py-3 rounded-lg hover:bg-gold transition text-lg font-medium" data-i18n="hero_btn">
+                Забронировать
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-stone">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-sage-dark mb-8 text-center" data-i18n="about_title">О базе отдыха</h2>
+            
+            <div class="mb-12">
+                <p class="text-lg text-gray-600 leading-relaxed text-center max-w-3xl mx-auto mb-8" data-i18n="about_text1">
+                    Добро пожаловать в уникальное место силы — <strong>Qaton Qaragai Resort & SPA</strong> в сердце Катон-Карагайского национального природного парка. Здесь, в гармонии с природой Алтайских гор, мы предлагаем древнейшую процедуру оздоровления — пантолечение.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="bg-sage-pale rounded-xl p-6 md:p-8">
+                    <h3 class="text-xl font-semibold text-sage-dark mb-4 text-center" data-i18n="about_katon_title">О Катон-Карагае</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base mb-4" data-i18n="about_katon_text1">
+                        Название «Катон-Карагай» переводится с тюркского как «отчий дом». Это место, откуда произошли многие тюркские народы.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base mb-4" data-i18n="about_katon_text2">
+                        Катон-Карагайский государственный национальный природный парк — самая крупная в Казахстане особо охраняемая природная зона, входящая в Список Всемирного наследия ЮНЕСКО.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base" data-i18n="about_katon_text3">
+                        Высота территории: от 850 м в долине Бухтармы до вершины горы Белухи — 4506 м.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+                <div class="bg-sage-pale rounded-xl overflow-hidden">
+                    <img src="images/hero/Altay.jpeg" alt="Горный Алтай" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-5">
+                        <h4 class="font-semibold text-sage-dark mb-2 text-lg" data-i18n="about_card1_title">Горный Алтай</h4>
+                        <p class="text-sm text-gray-600" data-i18n="about_card1_text">Крупнейшая охраняемая природная зона Казахстана, объект Всемирного наследия ЮНЕСКО.</p>
+                    </div>
+                </div>
+                <div class="bg-sage-pale rounded-xl overflow-hidden">
+                    <img src="images/hero/moral.jpg" alt="Маралы" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-5">
+                        <h4 class="font-semibold text-sage-dark mb-2 text-lg" data-i18n="about_card2_title">Маралы</h4>
+                        <p class="text-sm text-gray-600" data-i18n="about_card2_text">Благородные олени с уникальными пантами, содержащими 18 аминокислот, стволовые клетки и факторы роста.</p>
+                    </div>
+                </div>
+                <div class="bg-sage-pale rounded-xl overflow-hidden">
+                    <img src="images/hero/pantohealth.jpg" alt="Пантолечение" class="w-full h-48 md:h-64 object-cover">
+                    <div class="p-4 md:p-5">
+                        <h4 class="font-semibold text-sage-dark mb-2 text-lg" data-i18n="about_card3_title">Пантолечение</h4>
+                        <p class="text-sm text-gray-600" data-i18n="about_card3_text">Древнейшая традиция оздоровления: пантовые ванны, ингаляции, обертывания и маски.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-sage-pale rounded-xl p-6">
+                <h3 class="text-xl font-semibold text-sage-dark mb-4" data-i18n="advantages_title">Преимущества отдыха</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <ul class="text-gray-600 space-y-2">
+                        <li class="flex items-center"><span class="text-sage-dark mr-2">✓</span> <span data-i18n="adv1">Уникальное пантолечение</span></li>
+                        <li class="flex items-center"><span class="text-sage-dark mr-2">✓</span> <span data-i18n="adv2">Чистейший горный воздух</span></li>
+                        <li class="flex items-center"><span class="text-sage-dark mr-2">✓</span> <span data-i18n="adv3">3-х разовое питание</span></li>
+                    </ul>
+                    <ul class="text-gray-600 space-y-2">
+                        <li class="flex items-center"><span class="text-sage-dark mr-2">✓</span> <span data-i18n="adv4">Проживание в уютных номерах</span></li>
+                        <li class="flex items-center"><span class="text-sage-dark mr-2">✓</span> <span data-i18n="adv5">Фиточаи из алтайских трав</span></li>
+                        <li class="flex items-center"><span class="text-sage-dark mr-2">✓</span> <span data-i18n="adv6">Конные прогулки по горам</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPA Section -->
+    <section id="spa" class="relative py-16 md:py-24 overflow-hidden">
+        <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
+            <source src="video/Cotton_Video_SPA.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-sage-dark/80"></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-2" data-i18n="spa_title">SPA & Wellness</h2>
+            <p class="text-white/70 mb-6 md:mb-10" data-i18n="spa_subtitle">Нажмите на карточку для подробной информации</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="services-grid">
+                <!-- Карточки услуг будут заполнены динамически через JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Rooms Section -->
+    <section id="rooms" class="py-20 bg-stone">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-sage-dark mb-8 text-center" data-i18n="rooms_title">Номера</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-sage-pale rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="bg-gray-200 h-48 flex items-center justify-center">
+                        <span class="text-gray-400">Фото номера</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-sage-dark mb-2" data-i18n="room1_title">2-местный номер</h3>
+                        <p class="text-gray-600 text-sm mb-4" data-i18n="room1_text">Уютный номер с двумя кроватями, TV и санузлом.</p>
+                    </div>
+                </div>
+                <div class="bg-sage-pale rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="bg-gray-200 h-48 flex items-center justify-center">
+                        <span class="text-gray-400">Фото номера</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-sage-dark mb-2" data-i18n="room2_title">3-местный номер</h3>
+                        <p class="text-gray-600 text-sm mb-4" data-i18n="room2_text">Просторный номер для семьи или компании.</p>
+                    </div>
+                </div>
+                <div class="bg-sage-pale rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="bg-gray-200 h-48 flex items-center justify-center">
+                        <span class="text-gray-400">Фото номера</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-sage-dark mb-2" data-i18n="room3_title">4-местный номер</h3>
+                        <p class="text-gray-600 text-sm mb-4" data-i18n="room3_text">Большой номер с четырьмя кроватями.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prices Section -->
+    <section id="prices" class="py-20 bg-cream-dark">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-sage-dark mb-4 text-center" data-i18n="prices_title">Цены 2026</h2>
+            <p class="text-gray-600 text-center mb-10">QATON QARAGAI RESORT & SPA</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-10">
+                <div class="bg-sage-pale rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <div class="bg-sage p-4 text-center">
+                        <h3 class="text-xl font-bold text-white" data-i18n="health_title">Оздоровление</h3>
+                    </div>
+                    <div class="p-6">
+                        <ul class="text-gray-600 space-y-3 mb-6">
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="health_1">Проживание</span></li>
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="health_2">Полный пансион (3 раза в день)</span></li>
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="health_3">Две пантовые процедуры в день</span></li>
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="health_4">Ингаляции</span></li>
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="health_5">Пантогематоген</span></li>
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="health_6">Травяной чай с медом</span></li>
+                        </ul>
+                        <div class="text-center pt-4 border-t border-gray-200">
+                            <span class="text-3xl font-bold text-sage-dark">70 000 KZT</span>
+                            <p class="text-sm text-gray-500 mt-1" data-i18n="per_night">с человека за ночь</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sage-pale rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <div class="bg-gold p-4 text-center">
+                        <h3 class="text-xl font-bold text-white" data-i18n="relax_title">Расслабление</h3>
+                    </div>
+                    <div class="p-6">
+                        <ul class="text-gray-600 space-y-3 mb-6">
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="relax_1">Проживание</span></li>
+                            <li class="flex items-start"><span class="text-sage-dark mr-2 mt-1">✓</span> <span data-i18n="relax_2">Полный пансион (3 раза в день)</span></li>
+                        </ul>
+                        <div class="text-center pt-4 border-t border-gray-200">
+                            <span class="text-3xl font-bold text-sage-dark">35 000 KZT</span>
+                            <p class="text-sm text-gray-500 mt-1" data-i18n="per_night">с человека за ночь</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-sage-pale rounded-2xl p-6 md:p-8 mb-8">
+                <h3 class="text-xl font-semibold text-sage-dark mb-4 text-center" data-i18n="kids_title">Тарифы для детей</h3>
+                <div class="grid md:grid-cols-2 gap-4 text-center">
+                    <div class="bg-white/50 rounded-xl p-4">
+                        <p class="text-lg font-semibold text-sage-dark" data-i18n="kids_age1">Возраст 5–15</p>
+                        <p class="text-2xl font-bold text-sage-dark">20 000 KZT</p>
+                    </div>
+                    <div class="bg-white/50 rounded-xl p-4">
+                        <p class="text-lg font-semibold text-sage-dark" data-i18n="kids_age2">Возраст 16–21</p>
+                        <p class="text-2xl font-bold text-sage-dark">30 000 KZT</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 text-center mt-4" data-i18n="per_night">с человека за ночь</p>
+            </div>
+
+            <div class="text-center">
+                <a href="#contact" class="inline-block bg-sage text-white px-8 py-4 rounded-xl hover:bg-gold transition text-lg font-semibold" data-i18n="book_btn">
+                    Забронировать
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-cream-dark">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-sage-dark mb-8 text-center" data-i18n="gallery_title">Галерея</h2>
+            
+            <div class="relative">
+                <div class="overflow-hidden rounded-2xl">
+                    <div id="gallery-slider" class="flex transition duration-500">
+                        <div class="w-full flex-shrink-0">
+                            <img src="images/gallery/gallery1.jpg" alt="Фото курорта" class="w-full h-64 md:h-[500px] object-cover">
+                        </div>
+                        <div class="w-full flex-shrink-0">
+                            <img src="images/gallery/gallery2.jpg" alt="Фото курорта" class="w-full h-64 md:h-[500px] object-cover">
+                        </div>
+                        <div class="w-full flex-shrink-0">
+                            <img src="images/gallery/gallery3.jpg" alt="Фото курорта" class="w-full h-64 md:h-[500px] object-cover">
+                        </div>
+                        <div class="w-full flex-shrink-0">
+                            <img src="images/gallery/gallery4.jpg" alt="Фото курорта" class="w-full h-64 md:h-[500px] object-cover">
+                        </div>
+                        <div class="w-full flex-shrink-0">
+                            <img src="images/gallery/gallery5.jpg" alt="Фото курорта" class="w-full h-64 md:h-[500px] object-cover">
+                        </div>
+                        <div class="w-full flex-shrink-0">
+                            <img src="images/gallery/gallery6.jpg" alt="Фото курорта" class="w-full h-64 md:h-[500px] object-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-4 rounded-full transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-4 rounded-full transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+                
+                <div class="flex justify-center gap-2 mt-4" id="gallery-dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-stone">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-sage-dark mb-8 text-center" data-i18n="contact_title">Контакты</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-4">📞</span>
+                        <div>
+                            <p class="text-sm text-gray-500" data-i18n="contact_phone">Телефон</p>
+                            <a href="tel:+77087032737" class="hover:text-gold transition">+7-708-703-27-37</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-4">📍</span>
+                        <div>
+                            <p class="text-sm text-gray-500" data-i18n="contact_address">Адрес</p>
+                            <p class="font-semibold" data-i18n="contact_address_text">Катон-Карагайский район, Казахстан</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <a href="https://www.instagram.com/qaton_qaragai_resort" target="_blank" class="flex items-center hover:text-sage-dark transition">
+                            <svg class="w-6 h-6 mr-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                            <div>
+                                <p class="text-sm text-gray-500">Instagram</p>
+                                <p class="font-semibold">@qaton_qaragai_resort</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8 text-left">
+                        <a href="https://wa.me/77087032737" target="_blank" class="inline-flex items-left bg-sage text-white px-8 py-4 rounded-lg hover:bg-gold transition text-lg font-medium">
+                            <span class="mr-2">💬</span> <span data-i18n="contact_whatsapp">Написать в WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-sage-pale rounded-xl p-6 h-full">
+                    <h3 class="text-lg font-semibold text-sage-dark mb-4" data-i18n="contact_find">Как нас найти</h3>
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2608.3101487262443!2d85.43324657724486!3d49.17570107137689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42bedb6bd6c31429%3A0x9ba28f98df37e362!2sQaton%20Qaragai%20Resort%20%26%20SPA!5e0!3m2!1sen!2skz!4v1776588146881!5m2!1sen!2skz"
+                        width="100%" 
+                        class="w-full h-64 md:h-96"
+                        style="border:0; border-radius: 8px;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-sage text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <img src="images/hero/Logo.png" alt="Qaton Qaragai" class="h-16 mx-auto mb-4">
+            <p class="font-semibold text-xl mb-2">Qaton Qaragai Resort & SPA</p>
+            <p class="text-sm opacity-80" data-i18n="footer_tagline">Пантовые ванны и оздоровление в Алтайских горах</p>
+            <div class="flex justify-center gap-6 mt-6 text-sm">
+                <a href="tel:+77087032737" class="hover:text-gold transition">+7-708-703-27-37</a>
+                <a href="https://www.instagram.com/qaton_qaragai_resort" target="_blank" class="hover:text-gold transition">@qaton_qaragai_resort</a>
+            </div>
+            <p class="text-sm opacity-60 mt-4" data-i18n="footer_copyright">© 2026 Все права защищены</p>
+        </div>
+    </footer>
+
+    <!-- Modal for service details -->
+    <div id="service-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+            <img id="modal-img" class="modal-img" src="" alt="">
+            <div class="modal-body">
+                <h3 id="modal-title"></h3>
+                <p id="modal-desc"></p>
+                <p id="modal-how"></p>
+                <div class="info-section">
+                    <p><span class="label" id="modal-indications-label">Показания:</span> <span id="modal-indications"></span></p>
+                    <p><span class="label" id="modal-contraindications-label">Противопоказания:</span> <span id="modal-contraindications"></span></p>
+                    <p><span class="label" id="modal-effect-label">Эффект:</span> <span id="modal-effect"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="languages.js"></script>
+</body>
+</html>
